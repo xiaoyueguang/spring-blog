@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>失败</title>
+    <title>登录失败</title>
 </head>
 <body>
-失败原因<span th:text="${msg}"></span>
+<h1>登录失败!</h1>
+<h2>失败原因: <span th:text="${msg}"></span></h2>
+<h3>页面将稍后跳转!</h3>
 </body>
+
+<script>
+
+    setTimeout(function () {
+        location.href = "/";
+    }, 3000);
+</script>
 </html>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 @Controller
@@ -31,7 +32,12 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login (@RequestParam("username") String username, @RequestParam("password") String password, Model model) {
+    public String login (
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            Model model,
+            HttpSession session
+    ) {
         System.out.println(password);
         System.out.println(sha1Password(password, username));
         User user;
@@ -48,9 +54,14 @@ public class AuthController {
                 model.addAttribute("msg", "密码不一样");
                 return "auth/fail";
             } else {
-                System.out.println(user.getNickname());
-//                return "auth/success";
-                return "redirect:user/list";
+                if (user.getStatus() == 1) {
+                    model.addAttribute("msg", "当前账号还未激活! 请先去邮箱激活账号");
+                    return "auth/fail";
+                } else {
+                    // 标记登录UID. 登录状态
+                    session.setAttribute("uid", user.getUid());
+                    return "redirect:";
+                }
             }
         }
     }
