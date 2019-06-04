@@ -1,0 +1,37 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.ray'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    // web模块
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    // 调试开发工具模块
+    implementation "org.springframework.boot:spring-boot-devtools"
+    // thymeleaf模板
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+    implementation "org.apache.commons:commons-pool2"
+    implementation "org.springframework.session:spring-session-data-redis"
+    implementation "org.springframework.security:spring-security-web"
+    // webjars: 以jar包的形式管理前端js. 这里引入了jQuery. 可在 https://www.webjars.org 查找
+    implementation "org.webjars:jquery:3.4.1"
+    implementation "org.webjars:bootstrap:4.3.1"
+    implementation "commons-codec:commons-codec:1.12"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "mysql:mysql-connector-java"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
