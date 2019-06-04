@@ -127,7 +127,7 @@ public class AuthController {
                     e.printStackTrace();
                 }
 
-                return "redirect:user/list";
+                return "auth/register-done";
             } else {
                 model.addAttribute("emailError", "已经在该邮箱");
                 return "auth/register";
