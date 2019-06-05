@@ -1,11 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>创建成功</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人中心</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" />
+    <link rel="stylesheet" href="/css/index.css"/>
 </head>
 <body>
-<span th:text="${title}"></span>
-创建成功
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/" th:text="${sitename}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">首页</a>
+            </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0" th:if="${uid == null}">
+            <a class="btn btn-link" href="/login">登录</a>
+            <a class="btn btn-link" href="/register">注册</a>
+        </div>
+        <div class="form-inline my-2 my-lg-0" th:if="${uid}">
+            <a class="btn btn-link" href="/user">用户中心</a>
+        </div>
+    </div>
+</nav>
+
+<main role="main" class="container">
+    <div class="starter-template" style="padding-top: 64px;">
+        <div class="card">
+            <div class="card-body">
+                <h1>新建文章</h1>
+                <form action="/article/create" method="post">
+                    <div class="form-group">
+                        <label for="title">标题</label>
+                        <input type="text" class="form-control" th:classappend="${titleError == null ? '' : 'is-invalid'}" id="title" placeholder="请输入文章标题" name="title" th:value="${title}" />
+                        <div th:if="titleError != null" class="invalid-feedback" th:text="${titleError}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">内容</label>
+                        <textarea class="form-control" id="content"  th:classappend="${contentError == null ? '' : 'is-invalid'}" placeholder="请输入文章内容" name="content" th:text="${content}"></textarea>
+                        <div th:if="contentError != null" class="invalid-feedback" th:text="${contentError}"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
 </body>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.js}"></script>
 </html>

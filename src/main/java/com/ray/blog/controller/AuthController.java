@@ -38,8 +38,6 @@ public class AuthController {
             Model model,
             HttpSession session
     ) {
-        System.out.println(password);
-        System.out.println(sha1Password(password, username));
         User user;
 
         user = userRepository.findByUsername(username);
@@ -54,7 +52,7 @@ public class AuthController {
                 model.addAttribute("msg", "密码不一样");
                 return "auth/fail";
             } else {
-                if (user.getStatus() == 1) {
+                if (user.getStatus() == 0) {
                     model.addAttribute("msg", "当前账号还未激活! 请先去邮箱激活账号");
                     return "auth/fail";
                 } else {
@@ -161,5 +159,10 @@ public class AuthController {
             return "auth/active";
         }
 
+    }
+    @RequestMapping("/lgout")
+    public String lgout (HttpSession session) {
+        session.removeAttribute("uid");
+        return "redirect:/";
     }
 }
