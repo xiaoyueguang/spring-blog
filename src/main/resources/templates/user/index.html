@@ -33,7 +33,7 @@
 </nav>
 
 <main role="main" class="container">
-    <div class="starter-template" style="padding-top: 64px;">
+    <div class="starter-template">
         <div class="card">
             <div class="card-body">
                 <h1>用户中心</h1>
@@ -62,7 +62,7 @@
                         <td th:text="${article.title}"></td>
                         <td style="color:#fff;">
                             <a class="btn btn-info" th:href="${'/article/edit/' + article.id}">编辑</a>
-                            <a class="btn btn-danger">删除</a>
+                            <a class="btn btn-danger" th:href="${'/article/del/' + article.id}">删除</a>
                         </td>
                     </tr>
                     </tbody>

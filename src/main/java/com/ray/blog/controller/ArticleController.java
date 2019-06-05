@@ -132,4 +132,26 @@ public class ArticleController {
             return "article/not-found";
         }
     }
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.GET)
+    public String edit (
+            @PathVariable("id") String id,
+            HttpSession session,
+            Model model
+    ) {
+        try {
+            model.addAttribute("sitename", blogProperties.getTitle());
+
+            Article article = articleRepository.getOne(Long.parseLong(id));
+
+            if (article.getUid().equals(session.getAttribute("uid").toString())) {
+                articleRepository.deleteById(Long.parseLong(id));
+                return "article/del-success";
+            } else {
+                return "article/del-fail";
+            }
+
+        } catch (EntityNotFoundException e) {
+            return "article/not-found";
+        }
+    }
 }
