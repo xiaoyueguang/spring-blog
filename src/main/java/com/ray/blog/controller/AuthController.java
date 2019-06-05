@@ -3,7 +3,7 @@ package com.ray.blog.controller;
 import com.ray.blog.model.User;
 import com.ray.blog.repository.UserRepository;
 import com.ray.blog.service.MailService;
-import com.ray.blog.util.BlogProperties;
+import com.ray.blog.config.BlogProperties;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

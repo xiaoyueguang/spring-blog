@@ -4,7 +4,7 @@ import com.ray.blog.model.Article;
 import com.ray.blog.model.User;
 import com.ray.blog.repository.ArticleRepository;
 import com.ray.blog.repository.UserRepository;
-import com.ray.blog.util.BlogProperties;
+import com.ray.blog.config.BlogProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

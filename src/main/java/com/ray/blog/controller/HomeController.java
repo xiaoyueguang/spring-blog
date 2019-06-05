@@ -2,7 +2,7 @@ package com.ray.blog.controller;
 
 import com.ray.blog.model.Article;
 import com.ray.blog.repository.ArticleRepository;
-import com.ray.blog.util.BlogProperties;
+import com.ray.blog.config.BlogProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.UUID;
 
 // 定义一个控制器
 @Controller

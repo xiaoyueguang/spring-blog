@@ -1,4 +1,4 @@
-package com.ray.blog.util;
+package com.ray.blog.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

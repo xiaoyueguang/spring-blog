@@ -3,7 +3,7 @@ package com.ray.blog.controller;
 import com.ray.blog.model.Article;
 import com.ray.blog.repository.ArticleRepository;
 import com.ray.blog.repository.CommentRepository;
-import com.ray.blog.util.BlogProperties;
+import com.ray.blog.config.BlogProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

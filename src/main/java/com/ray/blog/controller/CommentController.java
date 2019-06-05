@@ -2,7 +2,7 @@ package com.ray.blog.controller;
 
 import com.ray.blog.model.Comment;
 import com.ray.blog.repository.CommentRepository;
-import com.ray.blog.util.BlogProperties;
+import com.ray.blog.config.BlogProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
