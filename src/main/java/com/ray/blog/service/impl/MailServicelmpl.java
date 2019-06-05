@@ -1,7 +1,6 @@
 package com.ray.blog.service.impl;
 
 import com.ray.blog.service.MailService;
-import com.sun.xml.internal.org.jvnet.mimepull.MIMEMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.internet.MimeMessage;
 
 @Component
-public
-class MailServicelmpl implements MailService {
+public class MailServicelmpl implements MailService {
     @Autowired
     private JavaMailSender mailSender;
 

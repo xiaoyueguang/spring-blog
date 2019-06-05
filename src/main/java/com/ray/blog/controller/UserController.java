@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
@@ -18,13 +17,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public String index (Model model) {
-//        User user = userRepository.findByUsernameOrEmail("linjilei", "linjilei@qq.com");
-        User user = userRepository.findByUsername("linjilei");
-        model.addAttribute("user", user);
-//        model.addAttribute("name", user.getUsername());
-        model.addAttribute("uuid", UUID.randomUUID().toString().replaceAll("-", ""));
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index (Model model, HttpSession session) {
+        Object uid = session.getAttribute("uid");
+        User user = userRepository.findByUid(uid.toString());
 
         return "user/index";
     }

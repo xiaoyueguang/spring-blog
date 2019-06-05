@@ -21,17 +21,24 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-devtools"
     // thymeleaf模板
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    // 邮件模块
     implementation "org.springframework.boot:spring-boot-starter-mail"
+    // 链接redis
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
     implementation "org.apache.commons:commons-pool2"
+    // session
     implementation "org.springframework.session:spring-session-data-redis"
+    // 安全
     implementation "org.springframework.security:spring-security-web"
     // webjars: 以jar包的形式管理前端js. 这里引入了jQuery. 可在 https://www.webjars.org 查找
     implementation "org.webjars:jquery:3.4.1"
+    // bootstrap css框架
     implementation "org.webjars:bootstrap:4.3.1"
+    // 加密
     implementation "commons-codec:commons-codec:1.12"
+    // jpa ORM库
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    // MySQL数据库连接
     implementation "mysql:mysql-connector-java"
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
