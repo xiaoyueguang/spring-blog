@@ -154,4 +154,25 @@ public class ArticleController {
             return "article/not-found";
         }
     }
+
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    public String detail (
+            @PathVariable("id") String id,
+            Model model
+    ) {
+        try {
+            model.addAttribute("sitename", blogProperties.getTitle());
+
+            Article article = articleRepository.getOne(Long.parseLong(id));
+
+            model.addAttribute("title", article.getTitle());
+            model.addAttribute("content", article.getContent());
+            model.addAttribute("author", article.getUser().getNickname());
+
+            return "article/detail";
+
+        } catch (EntityNotFoundException e) {
+            return "article/not-found";
+        }
+    }
 }
