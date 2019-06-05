@@ -53,4 +53,5 @@ public class Article implements Serializable {
     public User getUser() {
         return user;
     }
+
 }

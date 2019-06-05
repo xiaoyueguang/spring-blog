@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title th:text="${title}"></title>
+    <title>提交评论成功</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}" />
     <link rel="stylesheet" href="/css/index.css"/>
 </head>
@@ -33,23 +33,14 @@
 </nav>
 
 <main role="main" class="container">
-    <h1 th:text="${title}"></h1>
-    <h3 th:text="${'作者:' + author}"></h3>
-    <article style="padding-bottom: 32px;" th:text="${content}"></article>
-
-    <h2>发表评论</h2>
-    <form method="post" th:action="${'/comment/' + id}" style="padding-bottom: 32px;">
-        <div class="form-group">
-            <label for="content">内容</label>
-            <textarea class="form-control" id="content" placeholder="请输入评论内容" name="content"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">提交</button>
-    </form>
-
-    <ul class="list-group list-group-flush" th:each="comment: ${comments}">
-        <li class="list-group-item" th:text="${comment.user.nickname + ': ' + comment.content}"></li>
-    </ul>
+    <h1>提交评论成功! 正在返回</h1>
 </main>
+
+<script>
+    setTimeout(function () {
+        history.back();
+    }, 3000);
+</script>
 
 </body>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>

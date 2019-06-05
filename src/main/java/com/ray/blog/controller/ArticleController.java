@@ -2,8 +2,12 @@ package com.ray.blog.controller;
 
 import com.ray.blog.model.Article;
 import com.ray.blog.repository.ArticleRepository;
+import com.ray.blog.repository.CommentRepository;
 import com.ray.blog.util.BlogProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/article")
@@ -23,6 +26,9 @@ public class ArticleController {
 
     @Autowired
     private BlogProperties blogProperties;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createView (Model model) {
@@ -162,6 +168,7 @@ public class ArticleController {
     ) {
         try {
             model.addAttribute("sitename", blogProperties.getTitle());
+            model.addAttribute("id", id);
 
             Article article = articleRepository.getOne(Long.parseLong(id));
 
@@ -169,6 +176,9 @@ public class ArticleController {
             model.addAttribute("content", article.getContent());
             model.addAttribute("author", article.getUser().getNickname());
 
+            Sort sort = new Sort(Sort.Direction.DESC, "id");
+            Pageable pageable = PageRequest.of(0, 255, sort);
+            model.addAttribute("comments", commentRepository.findAllByAid(Long.parseLong(id), pageable));
             return "article/detail";
 
         } catch (EntityNotFoundException e) {
