@@ -1,9 +1,6 @@
 package com.ray.blog.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -16,17 +13,24 @@ public class Article implements Serializable {
     @Column
     private String content;
     @Column(nullable = false)
-    private String user_id;
+    private String uid;
+
+    @OneToOne
+    @JoinColumn(name = "uid", referencedColumnName = "uid", insertable = false, updatable = false)
+    private User user;
 
     public Article () {
         super();
     }
-    public Article(String title, String content, String user_id) {
+    public Article(String title, String content, String uid) {
         this.title = title;
         this.content = content;
-        this.user_id = user_id;
+        this.uid = uid;
     }
 
+    public Long getId () {
+        return id;
+    }
     public String getTitle () {
         return title;
     }
@@ -39,10 +43,14 @@ public class Article implements Serializable {
     public void setContent (String content) {
         this.content = content;
     }
-    public String getUser_id () {
-        return user_id;
+    public String getUid () {
+        return uid;
     }
-    public void setUser_id (String user_id) {
-        this.user_id = user_id;
+    public void setUid (String uid) {
+        this.uid = uid;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

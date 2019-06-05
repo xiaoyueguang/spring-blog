@@ -47,6 +47,38 @@
             <div class="card-body">
                 <h1>文章列表</h1>
                 <a type="button" class="btn btn-primary" style="color: #fff;" href="/article/create">发表文章</a>
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">文章</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="article: ${articles}">
+                        <td th:text="${article.id}"></td>
+                        <td th:text="${article.title}"></td>
+                        <td style="color:#fff;">
+                            <a class="btn btn-info" th:href="${'/article/edit/' + article.id}">编辑</a>
+                            <a class="btn btn-danger">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${articles.isFirst() ? 'disabled' : ''}"><a class="page-link" href="/user">首页</a></li>
+                        <li class="page-item" th:if="${articles.hasPrevious()}"><a class="page-link" th:href="${'/user?page=' + articles.previousPageable().pageNumber}">上一页</a></li>
+                        <li class="page-item"><a class="page-link">
+                            当前第<span th:text="${articles.getPageable().pageNumber + 1}"></span>页
+                        </a></li>
+                        <li class="page-item" th:if="${articles.hasNext()}"><a class="page-link" th:href="${'/user?page=' + articles.nextPageable().pageNumber}">下一页</a></li>
+                        <li class="page-item" th:classappend="${articles.isLast() ? 'disabled' : ''}"><a class="page-link" th:href="${'/user?page=' + (articles.getTotalPages() - 1)}">最后一页</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
