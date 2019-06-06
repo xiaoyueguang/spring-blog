@@ -66,20 +66,6 @@ public class AuthController {
         }
     }
 
-//    /*
-//    * 密码加密:
-//    * md5(md5(sha1(MD5(用户+MD5(密码)).substr(2)+salt).substr(2)))
-//    * */
-//    public String sha1Password (String password, String username) {
-////        return DigestUtils.sha1Hex(blogProperties.getSalt() + DigestUtils.md5Hex(DigestUtils.md5Hex(password + blogProperties.getSalt()).substring(4)));
-//        return DigestUtils.md5Hex(
-//                DigestUtils.md5Hex(
-//                        DigestUtils.sha1Hex(
-//                                DigestUtils.md5Hex(username + DigestUtils.md5Hex(password)).substring(4) + blogProperties.getSalt()
-//                        ).substring(2)
-//                )
-//        );
-//    }
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerView () {
 
@@ -107,8 +93,12 @@ public class AuthController {
             model.addAttribute("passwordError", "请输入密码");
             return "auth/register";
         }
-        if (!password.equals(password2)) {
+        if (password2.equals("")) {
             model.addAttribute("password2Error", "请输入确认密码");
+            return "auth/register";
+        }
+        if (!password.equals(password2)) {
+            model.addAttribute("password2Error", "两次密码不一致");
             return "auth/register";
         }
         if (email.equals("")) {
@@ -126,9 +116,13 @@ public class AuthController {
                 try {
                     UUID uuid = UUID.randomUUID();
                     stringRedisTemplate.opsForValue().set("USER-ID:" + uuid.toString(), user.getUid());
+
+                    // 测试用
+                    stringRedisTemplate.opsForValue().set("TEST-UUID-ID:", uuid.toString());
                     String url = "https://" + blogProperties.getHost() + "/" + "active/" + uuid;
                     String content = "点击<a href='" + url + "'>链接</a>激活! 如果不能点击, 请手动复制一下链接:";
                     mailService.sendHtmlMail(email, "注册成功! 请点击链接进行激活!", content + "<p>" + url + "</p>");
+
                     userRepository.save(user);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -128,7 +128,34 @@ public class AuthLoginControllerTests extends AbstractTest {
         ).andReturn();
         // 重定向
         Assert.assertEquals(302, mvcResult.getResponse().getStatus());
+        user.setStatus(0);
+        userRepository.save(user);
+    }
+
+    @Test
+    public void lgout () throws Exception {
         user.setStatus(1);
+        userRepository.save(user);
+        mvc.perform(
+                MockMvcRequestBuilders.post("/login")
+                        .param("username", username)
+                        .param("password", password)
+                        .accept(MediaType.TEXT_HTML_VALUE)
+        ).andReturn();
+
+        MvcResult mvcResult = mvc.perform(
+                MockMvcRequestBuilders.get("/lgout")
+                    .accept(MediaType.TEXT_HTML_VALUE)
+        ).andReturn();
+        Assert.assertEquals(302, mvcResult.getResponse().getStatus());
+
+        MvcResult mvcResult2 = mvc.perform(
+                MockMvcRequestBuilders.get("/")
+                        .accept(MediaType.TEXT_HTML_VALUE)
+        ).andReturn();
+        assertContent(mvcResult2.getResponse().getContentAsString(), "<a class=\"btn btn-link\" href=\"/login\">登录</a>");
+
+        user.setStatus(0);
         userRepository.save(user);
     }
 }
