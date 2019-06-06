@@ -4,7 +4,7 @@ import com.ray.blog.model.User;
 import com.ray.blog.repository.UserRepository;
 import com.ray.blog.service.MailService;
 import com.ray.blog.config.BlogProperties;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.ray.blog.service.PasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,8 @@ public class AuthController {
     private MailService mailService;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private PasswordService passwordService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginView (Model model) {
@@ -47,7 +49,7 @@ public class AuthController {
             return "auth/fail";
         } else {
             // 找到用户了
-            user = userRepository.findByUsernameAndPassword(username, sha1Password(password, username));
+            user = userRepository.findByUsernameAndPassword(username, passwordService.sha1Password(password, username));
             if (user == null) {
                 model.addAttribute("msg", "密码不一样");
                 return "auth/fail";
@@ -64,20 +66,20 @@ public class AuthController {
         }
     }
 
-    /*
-    * 密码加密:
-    * md5(md5(sha1(MD5(用户+MD5(密码)).substr(2)+salt).substr(2)))
-    * */
-    private String sha1Password (String password, String username) {
-//        return DigestUtils.sha1Hex(blogProperties.getSalt() + DigestUtils.md5Hex(DigestUtils.md5Hex(password + blogProperties.getSalt()).substring(4)));
-        return DigestUtils.md5Hex(
-                DigestUtils.md5Hex(
-                        DigestUtils.sha1Hex(
-                                DigestUtils.md5Hex(username + DigestUtils.md5Hex(password)).substring(4) + blogProperties.getSalt()
-                        ).substring(2)
-                )
-        );
-    }
+//    /*
+//    * 密码加密:
+//    * md5(md5(sha1(MD5(用户+MD5(密码)).substr(2)+salt).substr(2)))
+//    * */
+//    public String sha1Password (String password, String username) {
+////        return DigestUtils.sha1Hex(blogProperties.getSalt() + DigestUtils.md5Hex(DigestUtils.md5Hex(password + blogProperties.getSalt()).substring(4)));
+//        return DigestUtils.md5Hex(
+//                DigestUtils.md5Hex(
+//                        DigestUtils.sha1Hex(
+//                                DigestUtils.md5Hex(username + DigestUtils.md5Hex(password)).substring(4) + blogProperties.getSalt()
+//                        ).substring(2)
+//                )
+//        );
+//    }
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerView () {
 
@@ -98,22 +100,18 @@ public class AuthController {
         model.addAttribute("email", email);
 
         if (username.equals("")) {
-            System.out.println("用户名");
             model.addAttribute("usernameError", "请输入用户名");
             return "auth/register";
         }
         if (password.equals("")) {
-            System.out.println("password");
             model.addAttribute("passwordError", "请输入密码");
             return "auth/register";
         }
         if (!password.equals(password2)) {
-            System.out.println("password2");
             model.addAttribute("password2Error", "请输入确认密码");
             return "auth/register";
         }
         if (email.equals("")) {
-            System.out.println("email");
             model.addAttribute("emailError", "请输入电子邮箱");
             return "auth/register";
         }
@@ -124,7 +122,7 @@ public class AuthController {
         if (user == null) {
             user = userRepository.findByEmail(email);
             if (user == null) {
-                user = new User(username, username, sha1Password(password, username), email);
+                user = new User(username, username, passwordService.sha1Password(password, username), email);
                 try {
                     UUID uuid = UUID.randomUUID();
                     stringRedisTemplate.opsForValue().set("USER-ID:" + uuid.toString(), user.getUid());
