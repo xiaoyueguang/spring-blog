@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Rollback
-public class HomeControllerTests extends AbstractTest {
+public class UserControllerTests extends AbstractTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -48,41 +48,32 @@ public class HomeControllerTests extends AbstractTest {
     public void setAfter () {
         userRepository.delete(user);
     }
+
     @Test
-    public void IndexTestWithLgout() throws Exception {
-        String uri = "/";
-
+    public void indexWithLgout () throws Exception {
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("uid", "");
         MvcResult mvcResult = mvc.perform(
-                MockMvcRequestBuilders.get(uri)
+                MockMvcRequestBuilders.get("/user")
+                        .session(session)
                         .accept(MediaType.TEXT_HTML_VALUE)
-
         ).andReturn();
 
-        Assert.assertEquals(200, mvcResult.getResponse().getStatus());
-        String content = mvcResult.getResponse().getContentAsString();
-        // 验证标题
-        assertContent(content, "<title>首页</title>");
-        // 验证内容
-        assertContent(content, "<a class=\"navbar-brand\" href=\"/\">博客系统</a>");
-        // 验证登录状态
-        assertContent(content, "<a class=\"btn btn-link\" href=\"/login\">登录</a>");
-        // 验证内容和页码
-        assertContent(content, "<li class=\"page-item disabled\"><a class=\"page-link\" href=\"/\">首页</a></li>");
+        Assert.assertEquals(mvcResult.getResponse().getStatus(), 302);
     }
-
     @Test
-    public void IndexTestWithLogin () throws Exception {
-        String uri = "/";
+    public void indexWithPage1 () throws Exception {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("uid", user.getUid());
 
         MvcResult mvcResult = mvc.perform(
-                MockMvcRequestBuilders.get(uri)
+                MockMvcRequestBuilders.get("/user")
+                        .param("page", "0")
                         .session(session)
                         .accept(MediaType.TEXT_HTML_VALUE)
-
         ).andReturn();
+
         String content = mvcResult.getResponse().getContentAsString();
-        assertContent(content, "<a class=\"btn btn-link\" href=\"/user\">用户中心</a>");
+        assertContent(content, "<h2>昵称: <span>" + nickname + "</span></h2>");
     }
 }
